@@ -1,5 +1,6 @@
 ﻿$(document).ready(function() {
   let data;
+  let shuffleData;
   let isRandoming = false;
 
   fetch(
@@ -12,10 +13,13 @@
       data = myJson.user.map(u => {
         return `${u.name} ${u.surname}, ${u.company}`;
       });
+      shuffleData = data.sort(() => {
+        return 0.5 - Math.random();
+      });
     });
 
   function startRolling() {
-    var names = data;
+    var names = shuffleData;
     var start_idx = $('#name_list').data('start_idx');
     var idx_1 = start_idx % names.length;
     var idx_2 = (start_idx + 1) % names.length;

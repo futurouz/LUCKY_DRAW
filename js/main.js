@@ -4,6 +4,9 @@
   let isRandoming = false;
   let idx_1, idx_2, idx_3, idx_4, idx_5;
   let names;
+  let isFirstRoll = true;
+  let current;
+
   fetch(
     'https://script.google.com/macros/s/AKfycbw8a_uMecRi7RBLtKTqdM-FCjUKzIZqEPcWQlH80Oo-xgJ8b_mt/exec'
   )
@@ -41,10 +44,16 @@
       isRandoming = !isRandoming;
       if (isRandoming) {
         $('.draw-c').addClass('active');
-        $('#name_list').data('start_idx', 0);
+        if (isFirstRoll) {
+          $('#name_list').data('start_idx', 0);
+          isFirstRoll = !isFirstRoll;
+        } else {
+          $('#name_list').data('start_idx', current - 2);
+        }
         intervalID = setInterval(startRolling, 100);
       } else {
         clearInterval(intervalID);
+        current = idx_3;
         if (typeof names !== 'undefined') {
           names.splice(idx_3, 1);
         }

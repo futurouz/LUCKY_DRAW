@@ -6,6 +6,7 @@
   let names;
   let isFirstRoll = true;
   let current;
+  let idx_default = 0;
 
   fetch(
     'https://script.google.com/macros/s/AKfycbw8a_uMecRi7RBLtKTqdM-FCjUKzIZqEPcWQlH80Oo-xgJ8b_mt/exec'
@@ -20,11 +21,13 @@
       shuffleData = data.sort(() => {
         return 0.5 - Math.random();
       });
-      names = shuffleData;
+      names = shuffleData; 
+      $('.spinner-container').fadeOut('fast')
     });
 
+
   function startRolling() {
-    var start_idx = $('#name_list').data('start_idx');
+    var start_idx = idx_default;
     if (typeof names !== 'undefined') {
       idx_1 = start_idx % names.length;
       idx_2 = (start_idx + 1) % names.length;
@@ -36,7 +39,7 @@
       $('#draw-3 .text').text(names[idx_3]);
       $('#draw-4 .text').text(names[idx_4]);
       $('#draw-5 .text').text(names[idx_5]);
-      $('#name_list').data('start_idx', idx_2);
+      idx_default = idx_2;
     }
   }
   $('body').keyup(e => {
@@ -45,10 +48,10 @@
       if (isRandoming) {
         $('.draw-c').addClass('active');
         if (isFirstRoll) {
-          $('#name_list').data('start_idx', 0);
+          idx_default = 0;
           isFirstRoll = !isFirstRoll;
         } else {
-          $('#name_list').data('start_idx', current - 2);
+          idx_default = current - 2;
         }
         intervalID = setInterval(startRolling, 100);
       } else {
@@ -62,22 +65,3 @@
     }
   });
 });
-
-// function TrimString(sInString) {
-//   sInString = sInString.replace(/^\s+/g, ''); // strip leading
-//   return sInString.replace(/\s+$/g, ''); // strip trailing
-// }
-
-// function parseList(textarea) {
-//   var list_str = $(textarea).val();
-
-//   var names = new Array();
-
-//   var list_lines = list_str.split('\n');
-//   for (var i = 0; i < list_lines.length; i++) {
-//     var name = TrimString(list_lines[i]);
-//     if (name != '') names.push(name);
-//   }
-
-//   return names;
-// }
